@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 
 from rest.models import Blog
 from .serializers import BlogSerializer
+from account.models import Account
 
 
 @api_view(['GET', ])
@@ -57,9 +58,9 @@ def api_delete_blog_view(request, slug):
 
 @api_view(['POST', ])
 def api_post_blog_view(request):
-    blog = Blog()
+    account = Account.objects.get(email='ucup@gmail.com')  # still harcode
+    blog = Blog(author=account)
     if request.method == 'POST':
-        print(type(request.data))
         serializers_data = BlogSerializer(blog, data=request.data)
         if serializers_data.is_valid():
             serializers_data.save()

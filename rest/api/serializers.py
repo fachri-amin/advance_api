@@ -6,4 +6,4 @@ from rest.models import Blog
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['title', 'body', 'author']
+        fields = ['title', 'body']
