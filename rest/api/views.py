@@ -53,3 +53,15 @@ def api_delete_blog_view(request, slug):
         else:
             data['failure'] = 'delete failed'
         return Response(data=data)
+
+
+@api_view(['POST', ])
+def api_post_blog_view(request):
+    blog = Blog()
+    if request.method == 'POST':
+        print(type(request.data))
+        serializers_data = BlogSerializer(blog, data=request.data)
+        if serializers_data.is_valid():
+            serializers_data.save()
+            return Response(serializers_data.data, status=status.HTTP_201_CREATED)
+        return Response(serializers_data.errors, status=status.HTTP_400_BAD_REQUEST)

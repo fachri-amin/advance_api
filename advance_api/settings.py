@@ -25,9 +25,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third part
     'rest_framework',
+
+    # my apps
     'rest',
+    'account',
 ]
+
+# ! write this variable when you customize the user model and add Value (app_name.ModelName)
+AUTH_USER_MODEL = 'account.Account'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
