@@ -26,16 +26,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # third part
-    'rest_framework',
-
     # my apps
     'rest',
     'account',
+
+    # third part
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 # ! write this variable when you customize the user model and add Value (app_name.ModelName)
 AUTH_USER_MODEL = 'account.Account'
+
+# ! for api auth token
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

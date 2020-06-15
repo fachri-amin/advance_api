@@ -12,4 +12,8 @@ urlpatterns = [
 
     # REST API
     path('api/blog/', include('rest.api.urls', namespace='blog_api')),
+    path('api/account/', include('account.api.urls', namespace='account_api')),
+
+    # my App
+    path('rest/', include('rest.urls', namespace='rest')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
