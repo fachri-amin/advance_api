@@ -2,6 +2,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import ListAPIView
 
 from rest.models import Blog
 from .serializers import BlogSerializer
@@ -81,3 +84,11 @@ def api_post_blog_view(request):
             serializers_data.save()
             return Response(serializers_data.data, status=status.HTTP_201_CREATED)
         return Response(serializers_data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ApiBlogListView(ListAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    authentication_class = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    pagination_class = PageNumberPagination
