@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from rest.models import Blog
 from .serializers import BlogSerializer
@@ -92,3 +93,6 @@ class ApiBlogListView(ListAPIView):
     authentication_class = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     pagination_class = PageNumberPagination
+    filter_backends = (SearchFilter, OrderingFilter)
+    # ? use double underscore for particular field in foreign key field
+    search_fields = ('title', 'body', 'author__username')
