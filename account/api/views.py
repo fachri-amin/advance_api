@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from account.api.serializers import AccountSerializers, AccountPropertiesSerializer
+from account.api.serializers import AccountSerializers, AccountPropertiesSerializer, ChangeAccountPasswordSerializer
 from rest_framework.authtoken.models import Token
 from account.models import Account
 
@@ -55,5 +55,36 @@ def account_update_view(request):
             'response': 'Update account success'
         }
         return Response(data=data)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT', ])
+@permission_classes((IsAuthenticated,))
+def change_password_view(request):
+    account = request.user
+    serializer = ChangeAccountPasswordSerializer(account, data=request.data)
+    # print(account.check_password())
+    if request.data.get('new_password') != request.data.get('new_password2'):
+        data = {
+            'response': 'Password must be match!',
+        }
+        return Response(data=data)
+
+    if serializer.is_valid():
+        # Check old password
+        if not account.check_password(request.data.get("old_password")):
+            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+        # set_password also hashes the password that the user will get
+        account.set_password(request.data.get("new_password"))
+        serializer.save()
+        response = {
+            'status': 'success',
+            'code': status.HTTP_200_OK,
+            'message': 'Password updated successfully',
+            'data': []
+        }
+
+        return Response(response)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

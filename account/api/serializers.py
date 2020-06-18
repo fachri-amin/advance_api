@@ -35,3 +35,13 @@ class AccountPropertiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['pk', 'email', 'username']
+
+
+class ChangeAccountPasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+
+    class Meta:
+        model = Account
+        fields = ['old_password', 'new_password', 'new_password2']
